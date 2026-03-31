@@ -26,9 +26,13 @@ export const useLogin = () => {
         body: JSON.stringify(formData),
       });
 
+      console.log("Login successful, user data:", user);
       localStorage.setItem("ezbuy_user", JSON.stringify(user));
-
-      router.push("/home");
+      
+      const redirectPath = user?.role === 'Vendor' ? "/vendor-dashboard" : "/home";
+      console.log("Redirecting to:", redirectPath);
+      
+      router.push(redirectPath);
       router.refresh();
     } catch (err: any) {
       setError(err.message || "Invalid email or password");

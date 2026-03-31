@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export const NavBar = () => {
-    const [user, setUser] = useState<{ username: string } | null>(null);
+    const [user, setUser] = useState<{ userName: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -33,10 +33,12 @@ export const NavBar = () => {
 
                     {user ? (
                         <div className="flex items-center gap-4">
-                            <span className="text-gray-700">Hi, <span className="font-semibold">{user.username}</span></span>
+                            <span className="text-gray-600">Hi, <Link href="/profile" className="font-semibold text-blue-600">
+                                {user.userName}
+                            </Link></span>
                             <button
                                 onClick={handleLogout}
-                                className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+                                className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition"
                             >
                                 Logout
                             </button>
