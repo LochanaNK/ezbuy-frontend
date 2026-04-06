@@ -20,10 +20,11 @@ export const useVendorProducts = (vendorId: number | undefined) => {
     }
   }, [vendorId]);
 
-  const addProduct = async (newProduct: Omit<Products, "id">) => {
+  const addProduct = async (newProduct: Omit<Products, "id" | "vendorId">) => {
     try {
       await apiFetch("/products", {
         method: "POST",
+        
         body: JSON.stringify({ ...newProduct, vendorId }),
       });
       await fetchVendorProducts();

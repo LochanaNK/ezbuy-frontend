@@ -2,12 +2,13 @@ import { useProduct } from "../hooks/useProduct";
 import { Product } from "../types/productType";
 import { useCart } from "../../cart/hooks/useCart";
 import { useState, useEffect } from "react";
+import Cookie from "js-cookie";
 
 export const ProductCard = ({ product }: { product: Product }) => {
     const [userId, setUserId] = useState<number>();
 
     useEffect(() => {
-        const savedUser = localStorage.getItem("ezbuy_user");
+        const savedUser = Cookie.get("ezbuy_user");
         if (savedUser) {
             const user = JSON.parse(savedUser);
             setUserId(user.id);

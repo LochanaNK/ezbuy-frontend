@@ -1,9 +1,15 @@
+import Cookie from "js-cookie";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const apiFetch = async (endpoint: string, options: any = {}) => {
+
+  const token = typeof window !== "undefined" ? localStorage.getItem("ezbuy_token") : null;
+  const user = Cookie.get("ezbuy_user") ? JSON.parse(Cookie.get("ezbuy_user")!) : null;
+
   const headers = {
-    "Content-Type": "application/json", // 👈 Tell .NET "This is JSON!"
-    ...options.headers, // Allow individual calls to override headers if needed
+    "Content-Type": "application/json",
+    ...(token && {"Authorization" : `Bearer ${token}`}),
+    ...options.headers,
   };
   const response = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "@/lib/api";
 import { CartItem } from "../types/cartType";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
 
 export const useCart = (userId: number | undefined) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -15,6 +16,7 @@ export const useCart = (userId: number | undefined) => {
     try {
       const data = await apiFetch(`/cart/${userId}`);
       setCartItems(data);
+      console.log(data);
     } catch (error) {
       console.error("Failed to fetch cart: ", error);
     } finally {
@@ -33,10 +35,10 @@ export const useCart = (userId: number | undefined) => {
         method: "POST",
         body: JSON.stringify({ userId, productId, quantity }),
       });
-      alert("Item added to cart");
+      toast.success("Item added");
       await fetchCart();
     } catch (error: any) {
-      alert(error.message);
+      toast.error(error.message || "Failed to add item");
     }
   };
 
@@ -45,8 +47,9 @@ export const useCart = (userId: number | undefined) => {
     try {
       await apiFetch(`/cart/${userId}/${productId}`, { method: "DELETE" });
       setCartItems((prev) => prev.filter((item) => item.productId !== productId));
+      toast.success("Item removed");
     } catch (error) {
-      alert("Could not remove the item");
+      toast.error("Could not remove the item");
     }
   };
 
@@ -65,17 +68,28 @@ export const useCart = (userId: number | undefined) => {
           item.id === cartItemId ? { ...item, quantity: newQuantity } : item,
         ),
       );
+      fetchCart();
     } catch (error) {
       console.error("update failed: ", error);
     }
   };
+
+  const placeOrder = async (userId: number) =>{
+    try{
+      const result = await apiFetch(`/orders/checkout/${userId}`,{method:"POST"});
+      toast.success(result.message);
+      router.push("/profile");
+    }catch(error:any){
+      toast.error("Checkout failed: ",error.message);
+    }
+  }
 
   useEffect(() => {
     fetchCart();
   }, [userId]);
 
   const cartTotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.unitPrice * item.quantity,
     0,
   );
   return {
@@ -85,5 +99,6 @@ export const useCart = (userId: number | undefined) => {
     cartTotal,
     updateQuantity,
     addToCart,
+    placeOrder
   };
 };

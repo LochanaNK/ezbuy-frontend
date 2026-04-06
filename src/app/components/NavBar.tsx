@@ -2,20 +2,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export const NavBar = () => {
-    const [user, setUser] = useState<{ userName: string } | null>(null);
+    const [user, setUser] = useState<{ userName: string; role?: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {
-        const savedUser = localStorage.getItem("ezbuy_user");
+        const savedUser = Cookies.get("ezbuy_user");
         if (savedUser) {
             setUser(JSON.parse(savedUser));
         }
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("ezbuy_user");
+        Cookies.remove("ezbuy_user");
+        localStorage.removeItem("ezbuy_token");
         setUser(null);
         router.push("/login");
     };
@@ -28,8 +30,18 @@ export const NavBar = () => {
                 </Link>
 
                 <div className="flex items-center gap-6">
-                    <Link href="/home" className="text-gray-700 hover:text-blue-600 font-semibold text-decoration-line">Home</Link>
-                    <Link href="/cart" className="text-gray-700 hover:text-blue-600 font-semibold text-decoration-line">Cart</Link>
+                    {user?.role === "Vendor" && (
+                        <Link href="/vendor-dashboard" className="text-gray-700 hover:text-blue-600 font-semibold">
+                            Vendor Dashboard
+                        </Link>
+                    )}
+                    {user?.role === "Customer" && (
+                        <div className="flex items-center gap-4">
+                            <Link href="/home" className="text-gray-700 hover:text-blue-600 font-semibold text-decoration-line">Home</Link>
+                            <Link href="/cart" className="text-gray-700 hover:text-blue-600 font-semibold text-decoration-line">Cart</Link>
+                        </div>
+
+                    )}
 
                     {user ? (
                         <div className="flex items-center gap-4">

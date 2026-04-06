@@ -2,16 +2,20 @@
 import { useCart } from "./hooks/useCart";
 import { NavBar } from "../components/NavBar";
 import { useEffect, useState } from "react";
+import Cookie from "js-cookie";
 
 export default function CartPage() {
     const [userId, setUserId] = useState<number>();
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("ezbuy_user") || "{}");
-        setUserId(user?.id);
+        const savedUser = Cookie.get("ezbuy_user");
+        if (savedUser) {
+            const user = JSON.parse(savedUser);
+            setUserId(user?.id);
+        }
     }, []);
 
-    const { cartItems, loading, removeItem, cartTotal, updateQuantity } = useCart(userId);
+    const { cartItems, loading, removeItem, cartTotal, updateQuantity, addToCart, placeOrder } = useCart(userId);
 
     return (
         <main className="min-h-screen bg-gray-50">
@@ -29,7 +33,7 @@ export default function CartPage() {
                             <div key={item.id} className="bg-white p-4 rounded-lg shadow flex justify-between items-center">
                                 <div>
                                     <h3 className="font-bold text-gray-700">{item.productName}</h3>
-                                    <p className="text-gray-500">${item.price} x {item.quantity}</p>
+                                    <p className="text-gray-500">${item.unitPrice?.toFixed(2)} x {item.quantity} = ${(item.unitPrice * item.quantity).toFixed(2)}</p>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                     <button
@@ -56,7 +60,7 @@ export default function CartPage() {
                             <span className="text-xl font-bold text-gray-700">Total:</span>
                             <span className="text-2xl font-bold text-blue-600">${cartTotal.toFixed(2)}</span>
                         </div>
-                        <button className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4">
+                        <button  className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold mt-4" onClick={() => placeOrder(userId!)}>
                             Checkout Now
                         </button>
                     </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
+import { toast } from "react-toastify";
 
 export const useRegister = () => {
   const [formData, setFormData] = useState({
@@ -34,9 +35,11 @@ export const useRegister = () => {
         method: "POST",
         body: JSON.stringify(formData),
       });
+      toast.success("Registration successful! Please log in.");
       router.push("/login");
     } catch (error: any) {
       setError(error.message);
+      toast.error("Registration failed. Please try again.");
     }finally{
         setLoading(false);
     }
