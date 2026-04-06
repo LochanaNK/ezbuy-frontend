@@ -2,6 +2,7 @@
 import { useCart } from "./hooks/useCart";
 import { NavBar } from "../components/NavBar";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Cookie from "js-cookie";
 
 export default function CartPage() {
@@ -26,7 +27,15 @@ export default function CartPage() {
                 {loading ? (
                     <p>Loading cart...</p>
                 ) : cartItems.length === 0 ? (
-                    <p className="text-gray-500">Your cart is empty. Go buy something!</p>
+                    <div><p className="text-gray-500">Your cart is empty. Go buy something!</p>
+                    <Link
+                href="/home"
+                className="mt-4 inline-block p-1 text-slate-600 hover:text-mauve-800 hover:font-semibold after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 
+          after:bg-slate-600 after:transition-all after:duration-300 
+          hover:after:w-full relative"
+              >
+                Start Shopping
+              </Link></div>
                 ) : (
                     <div className="space-y-4">
                         {cartItems.map((item) => (

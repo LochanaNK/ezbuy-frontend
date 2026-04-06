@@ -18,17 +18,31 @@ export const ProductCard = ({ product }: { product: Product }) => {
     return (
         <div className="bg-white p-4 rounded-xl shadow hover:shadow-lg transition border border-gray-100 flex flex-col justify-between">
             <div>
-                <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
-                <p className="text-gray-500 text-sm mt-1 line-clamp-2">{product.description}</p>
-                <p className="text-2xl font-bold text-blue-600 mt-4">${product.price.toFixed(2)}</p>
+                <h3 className="text-lg font-bold text-mauve-800">{product.name}</h3>
+                <p className="text-gray-500 text-sm mt-1 line-clamp-2">
+                    {product.description}
+                </p>
+                <p className="text-2xl font-bold text-mauve-700 mt-4">
+                    ${product.price.toFixed(2)}
+                </p>
             </div>
 
-            <button
-                onClick={() => addToCart(product.id, 1)}
-                className="mt-4 w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-600 transition"
-            >
-                Add to Cart
-            </button>
+            <div className="flex justify-between">
+                <button
+                    onClick={() => addToCart(product.id, 1)}
+                    className="mt-4 w-1/2 bg-slate-800 text-white py-2 rounded-lg hover:bg-slate-600 transition"
+                >
+                    Add to Cart
+                </button>
+                {product.stockQuantity > 5 ? (
+                    <p className="text-green-500 text-md mt-5">
+                        Stock: {product.stockQuantity}
+                    </p>
+                ) : <p className="text-red-500 text-md mt-5">
+                    Stock: {product.stockQuantity}
+                </p>
+                }
+            </div>
         </div>
     );
-}
+};

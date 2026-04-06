@@ -76,11 +76,14 @@ export const useCart = (userId: number | undefined) => {
 
   const placeOrder = async (userId: number) =>{
     try{
-      const result = await apiFetch(`/orders/checkout/${userId}`,{method:"POST"});
+      setLoading(true);
+      const result = await apiFetch(`/order/create-pending/${userId}`,{method:"POST"});
       toast.success(result.message);
-      router.push("/profile");
+      router.push(`/checkout?orderId=${result.orderId}`);
     }catch(error:any){
-      toast.error("Checkout failed: ",error.message);
+      toast.error(`Checkout failed: ${error.message}`);
+    }finally{
+      setLoading(false);
     }
   }
 

@@ -52,7 +52,7 @@ export const ProductForm = ({ initialData, onSubmit, buttonText }: ProductProps)
                     required
                 />
             </div>
-            <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded font-bold">
+            <button type="submit" className="w-full bg-slate-800 hover:bg-slate-600 text-white py-2 rounded font-bold">
                 {buttonText}
             </button>
         </form>
