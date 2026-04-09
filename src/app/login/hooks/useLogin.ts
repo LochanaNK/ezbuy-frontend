@@ -43,6 +43,7 @@ export const useLogin = () => {
       
     } catch (err: any) {
       setError(err.message || "Invalid email or password");
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }

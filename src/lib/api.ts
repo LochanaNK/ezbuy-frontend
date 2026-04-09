@@ -13,27 +13,20 @@ export const apiFetch = async (endpoint: string, options: any = {}) => {
   };
   const response = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-
-    let errorData = { message: "An error occurred" };
-    if (errorText) {
-      try {
-        errorData = JSON.parse(errorText);
-      } catch (e) {
-        errorData = { message: errorText };
-      }
-    }
-
-    throw new Error(errorData.message || `Error: ${response.status}`);
-  }
-
-  if (
-    response.status === 204 ||
-    response.headers.get("content-length") === "0"
-  ) {
+  if(response.status === 204 || response.headers.get("content-length") === "0"){
     return null;
   }
 
-  return response.json();
+  const result = await response.json();
+  
+
+  if(!response.ok || !result.success){
+    const error = new Error(result.message || "An error occurred while fetching data");
+    (error as any).errorCode = result.errorCode || response.status;
+    (error as any).status = response.status;
+
+    throw error;
+  }
+
+  return result.data;
 };

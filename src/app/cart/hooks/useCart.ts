@@ -4,13 +4,13 @@ import { useState, useEffect, useCallback } from "react";
 import { apiFetch } from "@/lib/api";
 import { CartItem } from "../types/cartType";
 import { useRouter } from "next/navigation";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export const useCart = (userId: number | undefined) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  
+
   const fetchCart = useCallback(async () => {
     if (!userId) return;
     try {
@@ -23,7 +23,7 @@ export const useCart = (userId: number | undefined) => {
       setLoading(false);
     }
   }, [userId]);
-  
+
   const addToCart = async (productId: number, quantity: number = 1) => {
     if (!userId) {
       alert("Please log in to add items to yout cart");
@@ -42,11 +42,12 @@ export const useCart = (userId: number | undefined) => {
     }
   };
 
-
   const removeItem = async (productId: number) => {
     try {
       await apiFetch(`/cart/${userId}/${productId}`, { method: "DELETE" });
-      setCartItems((prev) => prev.filter((item) => item.productId !== productId));
+      setCartItems((prev) =>
+        prev.filter((item) => item.productId !== productId),
+      );
       toast.success("Item removed");
     } catch (error) {
       toast.error("Could not remove the item");
@@ -74,18 +75,20 @@ export const useCart = (userId: number | undefined) => {
     }
   };
 
-  const placeOrder = async (userId: number) =>{
-    try{
+  const placeOrder = async (userId: number) => {
+    try {
       setLoading(true);
-      const result = await apiFetch(`/order/create-pending/${userId}`,{method:"POST"});
-      toast.success(result.message);
-      router.push(`/checkout?orderId=${result.orderId}`);
-    }catch(error:any){
+      const result = await apiFetch(`/order/create-pending/${userId}`, {
+        method: "POST",
+      });
+      toast.success("Order placed successfully!");
+      router.push(`/checkout?orderId=${result}`);
+    } catch (error: any) {
       toast.error(`Checkout failed: ${error.message}`);
-    }finally{
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchCart();
@@ -102,6 +105,6 @@ export const useCart = (userId: number | undefined) => {
     cartTotal,
     updateQuantity,
     addToCart,
-    placeOrder
+    placeOrder,
   };
 };

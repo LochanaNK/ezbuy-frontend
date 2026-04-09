@@ -36,8 +36,8 @@ export default function ProfilePage() {
                   key={status}
                   onClick={() => setActiveFilter(status)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition ${activeFilter === status
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    ? "bg-slate-800 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-slate-500 hover:text-white"
                     }`}
                 >
                   {status}
@@ -142,13 +142,13 @@ export default function ProfilePage() {
                 <div className="mt-8 w-full border-t pt-6 space-y-4">
                   <div className="flex justify-between">
                     <span className="text-gray-500">Full Name:</span>
-                    <span className="font-medium text-gray-700">
+                    <span className="font-semibold text-slate-700">
                       {user.userName}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Email:</span>
-                    <span className="font-medium text-gray-700">{user.email}</span>
+                    <span className="font-medium text-slate-700">{user.email}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Account Type:</span>
@@ -158,7 +158,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <button className="mt-10 w-full bg-blue-600 py-3 rounded-lg hover:bg-blue-700 transition text-white font-semibold">
+                <button className="mt-10 w-full bg-slate-800 hover:bg-slate-600 py-3 rounded-lg transition text-white font-semibold">
                   Edit Profile Settings
                 </button>
               </div>

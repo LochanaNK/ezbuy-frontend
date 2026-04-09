@@ -10,10 +10,11 @@ export const useCheckoutForm = (orderId:number) =>{
     const stripe = useStripe();
     const elements = useElements();
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isConfirmed, setIsConfirmed] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent)=>{
         event.preventDefault();
-        if(!stripe || !elements){
+        if(!stripe || !elements || isProcessing || isConfirmed){
             return;
         }
 
@@ -26,10 +27,12 @@ export const useCheckoutForm = (orderId:number) =>{
         if(error){
             toast.error(error.message || "Payment failed. Please try again.");
         }else if(paymentIntent && paymentIntent.status === "succeeded"){
+            if (isConfirmed) return;
             try {
                 await apiFetch(`/order/confirm/${orderId}`, { method: "POST" });
+                setIsConfirmed(true);
                 toast.success("Payment Successful!");
-                window.location.href = "/profile"; // Redirect to history
+                window.location.href = "/profile";
             } catch (err) {
                 toast.error("Payment succeeded but server update failed.");
             }

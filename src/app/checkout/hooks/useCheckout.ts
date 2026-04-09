@@ -1,31 +1,33 @@
 "use client";
 import { apiFetch } from "@/lib/api";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSearchParams } from "next/navigation";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY!);
 
-export const useCheckout = () =>{
-    const searchParams = useSearchParams();
-    const [clientSecret, setClientSecret] = useState("");
-    const orderId = searchParams.get("orderId");
+export const useCheckout = () => {
+  const searchParams = useSearchParams();
+  const [clientSecret, setClientSecret] = useState("");
+  const orderId = searchParams.get("orderId");
 
-    useEffect(()=>{
-        if(!orderId)return;
+  useEffect(() => {
+    if (!orderId || orderId === "undefined") return;
 
-        const getSecret = async ()=>{
-            try{
-                const response = await apiFetch(`/order/payment-intent/${orderId}`,{
-                    method: "POST",
-                });
-                setClientSecret(response.clientSecret);
-            }catch(error){
-                console.error("Error fetching client secret: ",error);
-            }
-        };
-        getSecret();
-    }, [orderId]);
+    const getSecret = async () => {
+      try {
+        const response = await apiFetch(`/order/payment-intent/${orderId}`, {
+          method: "POST",
+        });
+        console.log("API Response Data:", response);
 
-    return {clientSecret, orderId, stripePromise};
-}
+        setClientSecret(response);
+      } catch (error) {
+        console.error("Error fetching client secret: ", error);
+      }
+    };
+    getSecret();
+  }, [orderId]);
+
+  return { clientSecret, orderId, stripePromise };
+};

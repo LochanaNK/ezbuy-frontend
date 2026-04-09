@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">{children}
         <ToastContainer
           position="top-right"
-          autoClose={500}
+          autoClose={1000}
           theme="colored"
           pauseOnHover={false} />
       </body>
