@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { FiLogOut, FiHome, FiShoppingCart, FiMessageCircle } from "react-icons/fi";
 
 export const NavBar = () => {
   const [user, setUser] = useState<{ userName: string; role?: string } | null>(
@@ -40,6 +41,7 @@ export const NavBar = () => {
           after:bg-mauve-800 after:transition-all after:duration-300 
           hover:after:w-full relative"
             >
+              <FiHome size={18} className="inline-block mr-2 mb-1" />
               Home
             </Link>
             <Link
@@ -48,6 +50,7 @@ export const NavBar = () => {
           after:bg-slate-600 after:transition-all after:duration-300 
           hover:after:w-full relative"
             >
+              <FiShoppingCart size={18} className="inline-block mr-2 mb-1" />
               Cart
             </Link>
             <Link
@@ -56,6 +59,7 @@ export const NavBar = () => {
           after:bg-slate-600 after:transition-all after:duration-300 
           hover:after:w-full relative"
             >
+              <FiMessageCircle size={18} className="inline-block mr-2 mb-1  " />
               Feedback
             </Link>
           </div>
@@ -67,12 +71,12 @@ export const NavBar = () => {
         {/* Right Section */}
         {user ? (
           <div className="flex items-center gap-4">
-            <span className="text-gray-600">
+            <span className="text-gray-700 font-semibold  ">
               Hi,{" "}
               <Link
                 href="/profile"
-                className="font-semibold text-mauve-800 hover:font-semibold p-1 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 
-          after:bg-mauve-800 after:transition-all after:duration-300 
+                className="font-semibold text-slate-600 hover:font-semibold p-1 hover:text-blue-600 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 
+          after:bg-blue-800 after:transition-all after:duration-300 
           hover:after:w-full relative"
               >
                 {user.userName}
@@ -80,9 +84,11 @@ export const NavBar = () => {
             </span>
             <button
               onClick={handleLogout}
-              className="bg-red-100 text-red-700 px-4 py-2 rounded-lg hover:bg-red-200 transition "
+              className="bg-red-50 text-red-700 px-4 py-2 rounded-lg hover:bg-red-100 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 
+          after:bg-red-500 after:transition-all after:duration-300 
+          hover:after:w-full relative"
             >
-              Logout
+              <FiLogOut size={18} />
             </button>
           </div>
         ) : (

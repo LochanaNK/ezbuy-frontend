@@ -4,6 +4,7 @@ import { NavBar } from "../components/NavBar";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Cookie from "js-cookie";
+import { FiShoppingCart } from "react-icons/fi";
 
 export default function CartPage() {
     const [userId, setUserId] = useState<number>();
@@ -34,6 +35,7 @@ export default function CartPage() {
           after:bg-slate-600 after:transition-all after:duration-300 
           hover:after:w-full relative"
               >
+                <FiShoppingCart size={18} className="inline-block mr-2 mb-1" />
                 Start Shopping
               </Link></div>
                 ) : (

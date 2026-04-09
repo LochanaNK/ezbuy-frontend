@@ -5,6 +5,7 @@ import { ProductCard } from "./components/ProductCard";
 import { NavBar } from "../components/NavBar";
 
 
+
 export default function HomePage() {
     const { products, loading, error } = useProduct();
     return (
